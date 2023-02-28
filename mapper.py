@@ -24,9 +24,9 @@ def main(argv):
             for word in pattern.findall(line):
                 total += afn.score(word)
                 wordcount += 1
-    #         print ("LongValueSum:" + word.lower() + "t”+"1")
+    #         print ("LongValueSum:" + word.lower() + "t"+"1")
             line = sys.stdin.readline()
-        print("DoubleValueSum:" + str(speech) + "t"+ str(total/wordcount))
+        print("DoubleValueSum:" + str(speech) + "/t"+ str(total/wordcount))
     except EOFError as error:
         return None
 
