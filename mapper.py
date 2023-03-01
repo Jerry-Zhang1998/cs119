@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import sys, os, re, string
+import sys, os, re
 from afinn import Afinn
 
 def clean_text(text):
@@ -14,19 +14,20 @@ round1 = lambda x: clean_text(x).strip()
 def main(argv):
     line = sys.stdin.readline()
     pattern = re.compile("[a-zA-Z][a-zA-Z0-9]*")
-    a = Afinn()
-    speech = os.getenv('prez_speeches')
+    afinn = Afinn(language='en')
+    prez_name = os.getenv('map_input_file')
     try:
-        total = 0
-        wordcount = 0
+        total_score = 0
+        word_num = 0
         while line:
             line = round1(line)
             for word in pattern.findall(line):
-                total += a.score(word)
-                wordcount += 1
-    #         print ("LongValueSum:" + word.lower() + "\t"+"1")
+                score = afinn.score(word)
+                total_score = total_score + score
+                word_num = word_num + 1
             line = sys.stdin.readline()
-        print("DoubleValueSum:" + str(speech) + "\t"+ str(total/wordcount))
+        valence = total_score / word_num
+        print("DoubleValueSum:" + prez_name + "\t"+ valence)
     except EOFError as error:
         return None
 
