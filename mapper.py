@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import sys, os, re
+import sys, os, re, string
 from afinn import Afinn
 
 def clean_text(text):
@@ -15,7 +15,10 @@ def main(argv):
     line = sys.stdin.readline()
     pattern = re.compile("[a-zA-Z][a-zA-Z0-9]*")
     afinn = Afinn(language='en')
-    prez_name = os.getenv('map_input_file')
+   # prez_name = 'hdfs://cluster-9dfa-m/user/yuezhang/speeches/adams.tar.gz'
+    prez_name = os.environ['mapreduce_map_input_file']
+    prez_name = prez_name.split('/')[-1]
+    prez_name = prez_name.split('.')[0]
     try:
         total_score = 0
         word_num = 0
@@ -27,7 +30,7 @@ def main(argv):
                 word_num = word_num + 1
             line = sys.stdin.readline()
         valence = total_score / word_num
-        print("DoubleValueSum:" + prez_name + "\t"+ valence)
+        print("DoubleValueSum:" + str(prez_name) + "\t" + str(valence))
     except EOFError as error:
         return None
 
